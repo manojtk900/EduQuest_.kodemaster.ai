@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "EduQuest – Gamified Education Platform"
+version = "1.0.0"
+id = "artifacts/eduquest"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+localPort = 24958
+name = "web"
+paths = ["/"]
+
+[services.development]
+run = "pnpm --filter @workspace/eduquest run dev"
+
+[services.env]
+PORT = "24958"
+BASE_PATH = "/"
+
+[services.production]
+build = ["pnpm", "--filter", "@workspace/eduquest", "run", "build"]
+publicDir = "artifacts/eduquest/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"

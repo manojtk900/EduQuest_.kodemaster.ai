@@ -1,0 +1,18 @@
+packages:
+  "framer-motion": "For fluid gamified page transitions and micro-interactions"
+  "recharts": "For the XP history chart and visual analytics in the profile"
+  "canvas-confetti": "For celebration effects when users level up or unlock badges"
+  "@types/canvas-confetti": "TypeScript definitions for canvas-confetti"
+  "date-fns": "For date formatting and mock timeline generation"
+
+images:
+  - path: "artifacts/eduquest/public/images/hero-bg.png"
+    description: "Abstract dark space background with glowing neon purple and electric blue geometric energetic shapes, gaming aesthetic"
+    aspect_ratio: "16:9"
+  - path: "artifacts/eduquest/public/images/avatar-placeholder.png"
+    description: "3D stylized cute gamified generic profile avatar character, neon lighting, transparent background"
+    aspect_ratio: "1:1"
+
+notes:
+  - "The API expects Bearer tokens in the Authorization header. We wrap the generated Orval hooks to inject this token."
+  - "Since real XP history isn't returned by the API, the Profile chart uses the current XP to project a simulated 7-day trend for visual flair."

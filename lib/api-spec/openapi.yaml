@@ -1,22 +1,30 @@
 openapi: 3.1.0
 info:
-  # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: EduQuest Gamified Education Platform API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: auth
+    description: Authentication operations
+  - name: users
+    description: User profile operations
+  - name: missions
+    description: Mission operations
+  - name: leaderboard
+    description: Leaderboard operations
+  - name: recommendations
+    description: AI recommendation operations
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,6 +32,157 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /auth/signup:
+    post:
+      operationId: signup
+      tags: [auth]
+      summary: Create a new user account
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AuthRequest"
+      responses:
+        "201":
+          description: User created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+        "400":
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /auth/login:
+    post:
+      operationId: login
+      tags: [auth]
+      summary: Login with existing credentials
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AuthRequest"
+      responses:
+        "200":
+          description: Logged in
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthResponse"
+        "401":
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /users/me:
+    get:
+      operationId: getMe
+      tags: [users]
+      summary: Get current user profile
+      responses:
+        "200":
+          description: User profile
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UserProfile"
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /users/daily-login:
+    post:
+      operationId: dailyLogin
+      tags: [users]
+      summary: Record daily login and award XP
+      responses:
+        "200":
+          description: Daily login recorded
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/DailyLoginResponse"
+
+  /missions:
+    get:
+      operationId: getMissions
+      tags: [missions]
+      summary: Get all missions with completion status
+      responses:
+        "200":
+          description: List of missions
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Mission"
+
+  /missions/{missionId}/complete:
+    post:
+      operationId: completeMission
+      tags: [missions]
+      summary: Complete a mission and earn XP
+      parameters:
+        - in: path
+          name: missionId
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Mission completed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MissionCompleteResponse"
+        "400":
+          description: Mission already completed or not found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+
+  /leaderboard:
+    get:
+      operationId: getLeaderboard
+      tags: [leaderboard]
+      summary: Get top users sorted by XP
+      responses:
+        "200":
+          description: Leaderboard
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/LeaderboardEntry"
+
+  /recommendations:
+    get:
+      operationId: getRecommendations
+      tags: [recommendations]
+      summary: Get AI-based course recommendations
+      responses:
+        "200":
+          description: Recommendations
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/RecommendationResponse"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +193,219 @@ components:
       required:
         - status
 
+    AuthRequest:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+      required:
+        - username
+        - password
+
+    AuthResponse:
+      type: object
+      properties:
+        token:
+          type: string
+        user:
+          $ref: "#/components/schemas/UserProfile"
+      required:
+        - token
+        - user
+
+    UserProfile:
+      type: object
+      properties:
+        id:
+          type: integer
+        username:
+          type: string
+        xp:
+          type: integer
+        level:
+          type: integer
+        levelName:
+          type: string
+        streak:
+          type: integer
+        badges:
+          type: array
+          items:
+            type: string
+        xpToNextLevel:
+          type: integer
+        progressPercent:
+          type: number
+        completedMissions:
+          type: array
+          items:
+            type: integer
+      required:
+        - id
+        - username
+        - xp
+        - level
+        - levelName
+        - streak
+        - badges
+        - xpToNextLevel
+        - progressPercent
+        - completedMissions
+
+    DailyLoginResponse:
+      type: object
+      properties:
+        xpAwarded:
+          type: integer
+        streakBonus:
+          type: integer
+        newStreak:
+          type: integer
+        message:
+          type: string
+        alreadyClaimed:
+          type: boolean
+      required:
+        - xpAwarded
+        - streakBonus
+        - newStreak
+        - message
+        - alreadyClaimed
+
+    Mission:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        type:
+          type: string
+          enum: [quiz, lesson, project]
+        xpReward:
+          type: integer
+        completed:
+          type: boolean
+        category:
+          type: string
+        difficulty:
+          type: string
+          enum: [beginner, intermediate, advanced]
+      required:
+        - id
+        - title
+        - description
+        - type
+        - xpReward
+        - completed
+        - category
+        - difficulty
+
+    MissionCompleteResponse:
+      type: object
+      properties:
+        xpAwarded:
+          type: integer
+        newXp:
+          type: integer
+        newLevel:
+          type: integer
+        levelName:
+          type: string
+        leveledUp:
+          type: boolean
+        badgesUnlocked:
+          type: array
+          items:
+            type: string
+        message:
+          type: string
+      required:
+        - xpAwarded
+        - newXp
+        - newLevel
+        - levelName
+        - leveledUp
+        - badgesUnlocked
+        - message
+
+    LeaderboardEntry:
+      type: object
+      properties:
+        rank:
+          type: integer
+        userId:
+          type: integer
+        username:
+          type: string
+        xp:
+          type: integer
+        level:
+          type: integer
+        levelName:
+          type: string
+        badges:
+          type: array
+          items:
+            type: string
+      required:
+        - rank
+        - userId
+        - username
+        - xp
+        - level
+        - levelName
+        - badges
+
+    RecommendationResponse:
+      type: object
+      properties:
+        recommended:
+          type: string
+        reason:
+          type: string
+        nextCourses:
+          type: array
+          items:
+            $ref: "#/components/schemas/CourseRecommendation"
+      required:
+        - recommended
+        - reason
+        - nextCourses
+
+    CourseRecommendation:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        difficulty:
+          type: string
+        estimatedXp:
+          type: integer
+        tags:
+          type: array
+          items:
+            type: string
+      required:
+        - title
+        - description
+        - difficulty
+        - estimatedXp
+        - tags
+
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+      required:
+        - error
+        - message

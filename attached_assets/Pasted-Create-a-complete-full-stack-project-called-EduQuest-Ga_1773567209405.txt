@@ -1,0 +1,227 @@
+Create a complete full-stack project called "EduQuest – Gamified Education Platform".
+
+PROJECT GOAL
+Build a web application that turns learning into a game for undergraduate students. The platform should motivate students using gamification elements like XP points, levels, rewards, missions, leaderboards, progress tracking, and AI-based learning recommendations.
+
+TECH STACK
+Frontend: Streamlit (Python UI)
+Backend: Python
+Database: SQLite
+AI Module: Scikit-learn recommendation logic
+Visualization: Streamlit charts
+
+PROJECT STRUCTURE
+
+eduquest/
+app/
+dashboard.py
+missions.py
+leaderboard.py
+profile.py
+
+backend/
+database.py
+gamification.py
+auth.py
+
+ai/
+recommendation.py
+
+data/
+users.db
+
+utils/
+levels.py
+badges.py
+
+requirements.txt
+README.md
+
+FEATURES
+
+1 USER SYSTEM
+Implement a simple login and signup system.
+Store users in SQLite database.
+
+User table:
+id
+username
+password
+xp
+level
+streak
+badge
+
+2 GAMIFICATION ENGINE
+
+Students earn XP when completing missions.
+
+XP SYSTEM
+Quiz completion = 20 XP
+Lesson completion = 10 XP
+Project completion = 50 XP
+Daily login = 5 XP
+
+LEVEL SYSTEM
+
+Level 1 Beginner = 0 XP
+Level 2 Explorer = 100 XP
+Level 3 Hacker = 300 XP
+Level 4 Master = 700 XP
+
+Automatically update level when XP increases.
+
+3 MISSIONS SYSTEM
+
+Create learning missions:
+
+Python Basics Quiz
+Data Structures Challenge
+Machine Learning Lesson
+AI Mini Project
+
+Each mission awards XP.
+
+Users click a mission → XP added → progress updated.
+
+4 LEADERBOARD
+
+Display top users sorted by XP.
+
+Leaderboard table columns:
+Rank
+Username
+XP
+Level
+
+5 BADGES SYSTEM
+
+Add achievement badges:
+
+Quiz Master
+Fast Learner
+7 Day Streak
+AI Explorer
+
+Unlock badges when conditions met.
+
+6 DAILY STREAK
+
+Track consecutive learning days.
+Reward streaks with bonus XP.
+
+Example
+3 days = 20 XP
+7 days = 50 XP
+
+7 AI RECOMMENDATION ENGINE
+
+Implement a simple recommendation system.
+
+Based on user XP and completed missions recommend next course.
+
+Example logic:
+
+XP < 100 → Python Basics
+XP < 300 → Data Structures
+XP < 600 → Machine Learning
+XP > 600 → Deep Learning
+
+Place this logic inside ai/recommendation.py.
+
+8 DASHBOARD UI (STREAMLIT)
+
+Create a dashboard with:
+
+User profile section
+XP counter
+Level indicator
+Progress bar
+Recommended course
+Leaderboard
+Mission buttons
+
+Use Streamlit components:
+
+st.metric
+st.progress
+st.table
+st.button
+st.sidebar
+
+9 DATABASE (SQLITE)
+
+Create SQLite database automatically.
+
+Users table
+Missions table
+Progress table
+
+10 VISUAL ANALYTICS
+
+Add learning analytics charts:
+
+XP progress chart
+Mission completion chart
+Leaderboard chart
+
+Use Streamlit charts.
+
+11 UI DESIGN
+
+Dashboard layout:
+
+Sidebar:
+Profile
+Missions
+Leaderboard
+Progress
+
+Main Panel:
+XP stats
+Level progress
+AI recommendation
+Charts
+
+Use emojis for gamification.
+
+12 REQUIREMENTS
+
+Generate requirements.txt with
+
+streamlit
+pandas
+scikit-learn
+sqlite3
+
+13 README FILE
+
+Create a professional README including:
+
+Project title
+Problem statement
+Solution
+Features
+Architecture
+Tech stack
+Installation steps
+Screenshots section
+Future improvements
+
+14 RUN COMMAND
+
+streamlit run app/dashboard.py
+
+15 BONUS FEATURES
+
+Add optional advanced features:
+
+AI chatbot tutor
+Personalized learning path
+Quiz generator
+XP animations
+Achievement popups
+
+Generate clean modular code for every file in the project and make sure the app runs successfully using Streamlit.
+
+Ensure the UI is modern and hackathon-ready.
