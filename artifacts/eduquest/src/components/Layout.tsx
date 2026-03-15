@@ -2,14 +2,15 @@ import { ReactNode } from "react";
 import { Link, useLocation } from "wouter";
 import { motion } from "framer-motion";
 import { LayoutDashboard, Target, Trophy, User, LogOut, Flame, Sparkles } from "lucide-react";
-import { useUserQuery, useLogout } from "@/hooks/use-user"; // Wait, useLogout is in use-auth. Let's fix that import
-import { useLogout as useAuthLogout } from "@/hooks/use-auth";
+import { useUserQuery } from "@/hooks/use-user";
+import { useLogout } from "@/hooks/use-auth";
 import { cn } from "@/lib/utils";
+import ChatBot from "@/components/ChatBot";
 
 export function Layout({ children }: { children: ReactNode }) {
   const [location] = useLocation();
   const { data: user, isLoading } = useUserQuery();
-  const logout = useAuthLogout();
+  const logout = useLogout();
 
   const navItems = [
     { href: "/", label: "Dashboard", icon: LayoutDashboard },
@@ -26,7 +27,6 @@ export function Layout({ children }: { children: ReactNode }) {
     );
   }
 
-  // Redirect if not authed
   if (!user && location !== "/login" && location !== "/signup") {
     window.location.href = "/login";
     return null;
@@ -50,18 +50,18 @@ export function Layout({ children }: { children: ReactNode }) {
             const isActive = location === item.href;
             const Icon = item.icon;
             return (
-              <Link 
-                key={item.href} 
+              <Link
+                key={item.href}
                 href={item.href}
                 className={cn(
                   "flex items-center gap-4 px-4 py-3 rounded-2xl transition-all duration-300 relative group",
-                  isActive 
-                    ? "bg-primary/10 text-primary neon-border" 
+                  isActive
+                    ? "bg-primary/10 text-primary neon-border"
                     : "text-muted-foreground hover:bg-white/5 hover:text-foreground"
                 )}
               >
                 {isActive && (
-                  <motion.div 
+                  <motion.div
                     layoutId="activeNav"
                     className="absolute inset-0 bg-primary/10 rounded-2xl -z-10"
                     transition={{ type: "spring", stiffness: 300, damping: 30 }}
@@ -78,22 +78,25 @@ export function Layout({ children }: { children: ReactNode }) {
           <div className="hidden md:block p-6 border-t border-white/5">
             <div className="bg-black/40 rounded-2xl p-4 mb-4 border border-white/5">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm font-semibold text-muted-foreground">Lvl {user.level}</span>
+                <span className="text-sm font-semibold text-muted-foreground">Lvl {user.level} · {user.levelName}</span>
                 <div className="flex items-center gap-1 text-accent">
                   <Flame className="w-4 h-4 fill-current" />
                   <span className="text-sm font-bold">{user.streak}</span>
                 </div>
               </div>
               <div className="h-2 w-full bg-white/10 rounded-full overflow-hidden">
-                <div 
+                <div
                   className="h-full bg-gradient-to-r from-primary to-secondary transition-all duration-1000 ease-out"
                   style={{ width: `${user.progressPercent}%` }}
                 />
               </div>
-              <p className="text-xs text-muted-foreground mt-2 text-right">{user.xpToNextLevel} XP to go</p>
+              <div className="flex items-center justify-between mt-2">
+                <span className="text-xs text-accent font-bold">{user.xp} XP</span>
+                <span className="text-xs text-muted-foreground">{user.xpToNextLevel} to go</span>
+              </div>
             </div>
-            
-            <button 
+
+            <button
               onClick={logout}
               className="flex items-center gap-4 px-4 py-3 w-full rounded-2xl text-muted-foreground hover:bg-destructive/10 hover:text-destructive transition-colors group"
             >
@@ -118,6 +121,9 @@ export function Layout({ children }: { children: ReactNode }) {
           </motion.div>
         </div>
       </main>
+
+      {/* AI Chatbot */}
+      <ChatBot />
     </div>
   );
 }

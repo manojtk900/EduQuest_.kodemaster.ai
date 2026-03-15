@@ -38,12 +38,29 @@ artifacts-monorepo/
 
 - **Auth System**: JWT-based login/signup (stored in localStorage as `eduquest_token`)
 - **Gamification Engine**: XP system, level progression (Beginner/Explorer/Hacker/Master), badges
-- **Missions**: 15 seeded learning missions (quizzes, lessons, projects) across Python, AI, Data Science categories
+- **Mission System**: Missions open dedicated content pages — XP is only awarded AFTER completion:
+  - **Lesson missions** → YouTube video embed + lesson notes → "Mark Complete" awards 10 XP
+  - **Quiz missions** → 5-question MCQ → Must score ≥60% to earn 20 XP, retry on fail
+  - **Project missions** → Python code editor with problem statement → Submit to earn 50 XP
+- **Mission Filters**: All / Lesson / Quiz / Project filters with state-based filtering
 - **Leaderboard**: Top users sorted by XP with rank medals
 - **Daily Login**: +5 XP per day, streak bonuses (3-day = +20 XP, 7-day = +50 XP)
 - **Badges**: Quiz Master, Fast Learner, AI Explorer, 7 Day Streak
 - **AI Recommendations**: XP-based course suggestions
+- **AI Chatbot**: Floating chatbot widget (bottom-right) connected to OpenAI gpt-5-mini, acts as a programming tutor
 - **Analytics**: XP progress charts in profile page
+
+## AI Chatbot
+
+- Endpoint: `POST /api/chat` (requires auth)
+- Model: gpt-5-mini via Replit AI Integrations (no API key needed)
+- System prompt: EduQuest AI tutor specialized in Python, ML, data structures
+
+## Mission Content (static data in `artifacts/eduquest/src/data/mission-content.ts`)
+
+- LESSON_CONTENT: YouTube video IDs + explanation text for each lesson mission
+- QUIZ_CONTENT: 5 MCQ questions per quiz mission
+- CODING_CONTENT: Problem statements + starter code + hints for project missions
 
 ## Database Schema (lib/db/src/schema/)
 

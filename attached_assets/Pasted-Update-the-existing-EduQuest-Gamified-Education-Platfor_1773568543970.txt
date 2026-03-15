@@ -1,0 +1,233 @@
+Update the existing EduQuest Gamified Education Platform project with the following improvements and features.
+
+IMPORTANT
+Currently missions give XP immediately when clicked. Change this behavior so that missions open content first and XP is only awarded after the task is completed.
+
+--------------------------------
+MISSION SYSTEM FIX
+--------------------------------
+
+Change mission flow to:
+
+User clicks mission
+→ open mission page
+→ user completes task
+→ XP awarded
+→ progress updated
+→ leaderboard updated
+
+Do NOT give XP when clicking mission cards.
+
+--------------------------------
+LESSON MISSIONS
+--------------------------------
+
+When clicking a lesson mission:
+
+Open a lesson page with:
+
+Lesson title
+Lesson description
+Embedded YouTube learning video
+Text explanation
+Mark Complete button
+
+Example lesson page layout:
+
+Title
+Video player
+Lesson explanation
+Complete Lesson button
+
+Only after clicking "Complete Lesson" give XP.
+
+Example XP:
+Lesson completion = 10 XP
+
+--------------------------------
+QUIZ MISSIONS
+--------------------------------
+
+When clicking a quiz mission open a quiz page.
+
+Quiz page should contain:
+
+Multiple choice questions
+4 answer options
+Next question button
+Score tracker
+Submit quiz button
+
+After quiz submission:
+
+If score > 60%
+Award XP (20 XP)
+
+If score < 60%
+Encourage retry
+
+Example quiz question structure:
+
+question
+options[]
+correct_answer
+
+--------------------------------
+CODING MISSIONS
+--------------------------------
+
+When clicking coding missions open a coding challenge page.
+
+Coding page should include:
+
+Problem statement
+Code editor
+Run code button
+Submit solution button
+
+Use a simple Python code editor using:
+
+textarea editor OR Monaco editor
+
+Example challenge:
+
+Write a Python loop to print numbers 1 to 10.
+
+Award XP only after successful submission.
+
+Coding XP reward:
+50 XP
+
+--------------------------------
+MISSION FILTER FIX
+--------------------------------
+
+Currently the filters:
+
+All
+Lesson
+Quiz
+Project
+
+do not work correctly.
+
+Add filtering logic so that:
+
+All → show all missions
+Lesson → show lesson missions only
+Quiz → show quiz missions only
+Project → show coding projects only
+
+Use state-based filtering.
+
+--------------------------------
+AI CHATBOT FEATURE
+--------------------------------
+
+Add an AI tutor chatbot to the website.
+
+The chatbot should:
+
+Explain lessons
+Help with quiz questions
+Help with coding problems
+Guide learning paths
+
+Add a floating chatbot widget on the bottom right of the screen.
+
+Chatbot UI includes:
+
+Chat window
+User input box
+Send button
+Message history
+
+--------------------------------
+CHATGPT API INTEGRATION
+--------------------------------
+
+Connect chatbot with OpenAI API.
+
+Backend endpoint:
+
+POST /chat
+
+Request:
+{
+message: user_message
+}
+
+Response:
+AI generated response
+
+System prompt:
+
+"You are an AI tutor helping students learn programming, data structures, machine learning, and software development. Explain concepts clearly with examples."
+
+Use model:
+
+gpt-4o-mini
+
+--------------------------------
+DASHBOARD IMPROVEMENTS
+--------------------------------
+
+Keep existing dashboard but improve:
+
+XP progress bar
+Level indicator
+AI recommended learning path
+Mission completion stats
+
+--------------------------------
+DATABASE UPDATE
+--------------------------------
+
+Update database tables:
+
+Users
+Missions
+Progress
+QuizResults
+
+Track:
+
+completed missions
+quiz scores
+earned XP
+
+--------------------------------
+XP SYSTEM
+--------------------------------
+
+Lesson completion = 10 XP
+Quiz completion = 20 XP
+Coding challenge = 50 XP
+Daily login streak = 5 XP
+
+--------------------------------
+LEVEL SYSTEM
+--------------------------------
+
+Level 1 Beginner = 0 XP
+Level 2 Explorer = 100 XP
+Level 3 Hacker = 300 XP
+Level 4 Master = 700 XP
+
+Auto update levels when XP increases.
+
+--------------------------------
+FINAL RESULT
+--------------------------------
+
+Missions Hub should behave like:
+
+Lesson → open video lesson
+Quiz → open MCQ quiz
+Project → open coding challenge
+
+XP given only after completion.
+
+Add working AI tutor chatbot connected to ChatGPT.
+
+Ensure the project runs without errors and keep the modern UI design already present.
